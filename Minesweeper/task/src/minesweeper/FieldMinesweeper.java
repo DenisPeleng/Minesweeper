@@ -12,7 +12,6 @@ public class FieldMinesweeper {
     private boolean isSteppedOnMine = false;
     private final ArrayDeque<Integer> arrayDequeColumnToCheck = new ArrayDeque<>();
     private final ArrayDeque<Integer> arrayDequeRowToCheck = new ArrayDeque<>();
-
     FieldMinesweeper(int fieldSizeX, int fieldSizeY) {
         this.fieldSizeX = fieldSizeX;
         this.fieldSizeY = fieldSizeY;
@@ -166,14 +165,15 @@ public class FieldMinesweeper {
         arrayDequeRowToCheck.push(y);
         while (!arrayDequeColumnToCheck.isEmpty() && !arrayDequeRowToCheck.isEmpty()) {
             checkAndMarkEmptyCellsInRow(arrayDequeColumnToCheck.pop(), arrayDequeRowToCheck.pop());
-        }
-        for (int i = 0; i < fieldSizeY; i++) {
-            for (int j = 0; j < fieldSizeX; j++) {
-                if (fieldInGame[i][j] == '/') {
-                    markCellAroundEmpty(i, j);
+            for (int i = 0; i < fieldSizeY; i++) {
+                for (int j = 0; j < fieldSizeX; j++) {
+                    if (fieldInGame[i][j] == '/') {
+                        markCellAroundEmpty(i, j);
+                    }
                 }
             }
         }
+
     }
 
     private void checkAndMarkEmptyCellsInRow(int x, int y) {
@@ -231,6 +231,10 @@ public class FieldMinesweeper {
 
                         if (fieldWithAnswer[i][j] != 'X') {
                             fieldInGame[i][j] = fieldWithAnswer[i][j];
+                            if (fieldWithAnswer[i][j] == '.') {
+                                arrayDequeColumnToCheck.push(j);
+                                arrayDequeRowToCheck.push(i);
+                            }
                         }
                     }
                 }
